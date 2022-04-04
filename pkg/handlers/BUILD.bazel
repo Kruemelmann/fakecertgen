@@ -1,0 +1,13 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "handlers",
+    srcs = [
+        "cert.go",
+        "home.go",
+        "renew.go",
+    ],
+    importpath = "github.com/kruemelmann/fake-certgen/pkg/handlers",
+    visibility = ["//visibility:public"],
+    deps = ["//pkg/cert"],
+)
