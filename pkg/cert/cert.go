@@ -54,19 +54,25 @@ func initCertificate() (*Certificate, error) {
 	cert := &x509.Certificate{
 		SerialNumber: big.NewInt(1658),
 		Subject: pkix.Name{
-			Organization:  []string{"Company, INC."},
-			Country:       []string{"US"},
+			Organization:  []string{"dummy, INC."},
+			Country:       []string{""},
 			Province:      []string{""},
-			Locality:      []string{"San Francisco"},
-			StreetAddress: []string{"Golden Gate Bridge"},
-			PostalCode:    []string{"94016"},
+			Locality:      []string{"noobland"},
+			StreetAddress: []string{"beginner street"},
+			PostalCode:    []string{"123456"},
 		},
-		IPAddresses:  []net.IP{net.IPv4(127, 0, 0, 1), net.IPv6loopback},
+		IPAddresses: []net.IP{
+			net.IPv4(127, 0, 0, 1),
+			net.IPv6loopback,
+		},
 		NotBefore:    time.Now(),
 		NotAfter:     time.Now().AddDate(10, 0, 0),
 		SubjectKeyId: []byte{1, 2, 3, 4, 6},
-		ExtKeyUsage:  []x509.ExtKeyUsage{x509.ExtKeyUsageClientAuth, x509.ExtKeyUsageServerAuth},
-		KeyUsage:     x509.KeyUsageDigitalSignature,
+		ExtKeyUsage: []x509.ExtKeyUsage{
+			x509.ExtKeyUsageClientAuth,
+			x509.ExtKeyUsageServerAuth,
+		},
+		KeyUsage: x509.KeyUsageDigitalSignature,
 	}
 	//get the ca
 	ca := *GetCA()
