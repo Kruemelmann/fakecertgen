@@ -8,6 +8,5 @@ import (
 
 func CertHandler(w http.ResponseWriter, r *http.Request) {
 	crt := cert.GetCertificate()
-
 	w.Write(crt.PEM.Bytes())
 }
