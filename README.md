@@ -41,5 +41,15 @@ To renew the cert do:
 curl localhost:9000/renew
 ```
 
+## Contributing
+
+Pull requests welcome:)
+
+If you like to do some bigger changes please open an issue, so we can chat about.
+
+## Authors
+
+* kruemelmann - [@kruemelmann](https://github.com/kruemelmann/)
+
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
