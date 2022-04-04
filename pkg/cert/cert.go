@@ -10,6 +10,7 @@ import (
 	"log"
 	"math/big"
 	"net"
+	"os"
 	"sync"
 	"time"
 )
@@ -35,6 +36,11 @@ func GetCertificate() *Certificate {
 			log.Fatal(err)
 		}
 		instance = newcrt
+		//save to disc
+		err = savePEMtoDisk(newcrt)
+		if err != nil {
+			log.Fatal(err)
+		}
 	}
 	return instance
 }
@@ -48,6 +54,31 @@ func RenewCertificate() {
 		log.Fatal(err)
 	}
 	instance = newcrt
+}
+
+func savePEMtoDisk(crt *Certificate) error {
+	//Store Certificate on Disk
+	writeToFile("/certs/fullchain.pem", crt.PEM.Bytes())
+
+	//Store PrivateKey on Disk
+	writeToFile("/certs/privkey.pem", crt.PrivKeyPEM.Bytes())
+	return nil
+}
+
+func writeToFile(filename string, content []byte) {
+	merr := os.MkdirAll("/certs", os.ModePerm)
+	if merr != nil {
+		panic(merr)
+	}
+
+	f, err := os.OpenFile(filename, os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		log.Fatal(err)
+	}
+	_, err = f.Write(content)
+	if err != nil {
+		log.Fatal(err)
+	}
 }
 
 func initCertificate() (*Certificate, error) {

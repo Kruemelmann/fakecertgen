@@ -22,6 +22,11 @@ services:
     container_name: fakecertgen
     ports:
       - 9000:9000
+    volumes:
+      - fakecert:/certs
+
+volumes:
+  fakecert:
 ```
 
 ## Usage
