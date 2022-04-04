@@ -38,3 +38,13 @@ container_image(
     ],
     repository = "nasenbaerchen",
 )
+
+container_push(
+    name = "release-latest",
+    image = ":fakecertgen",
+    registry = "index.docker.io",
+    repository = "nasenbaerchen/fakecertgen",
+    tag = "latest",
+    skip_unchanged_digest = True,
+    format = "Docker",
+)
