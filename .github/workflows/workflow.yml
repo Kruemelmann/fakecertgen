@@ -24,10 +24,6 @@ jobs:
           chmod +x "${GITHUB_WORKSPACE}/bin/bazel"
 
       -
-        name: Run tests
-        run: bazel test //...
-
-      -
         name: Deploying current release
         run: bazel run //cmd/fake-certgen:release-latest
 
