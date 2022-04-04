@@ -12,13 +12,11 @@ import (
 func main() {
 	log.Printf("Starting fake-certgen\n")
 
-	//init CA
+	//init CA + Certificate
 	cert.GetCA()
-
-	//init Certificate
 	cert.GetCertificate()
 
-	//Webserver setup
+	// Webserver setup
 	r := mux.NewRouter()
 	// Register all handlers with the corresponding routes
 	r.HandleFunc("/", handlers.HomeHandler)
