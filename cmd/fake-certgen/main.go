@@ -13,8 +13,10 @@ func main() {
 	log.Printf("Starting fake-certgen\n")
 
 	//init CA + Certificate
-	cert.GetCA()
-	cert.GetCertificate()
+	go func() {
+		cert.GetCA()
+		cert.GetCertificate()
+	}()
 
 	// Webserver setup
 	r := mux.NewRouter()

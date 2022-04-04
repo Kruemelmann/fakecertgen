@@ -20,13 +20,21 @@ go_binary(
     visibility = ["//visibility:public"],
 )
 
+### cross compile for the docker container
+go_binary(
+    name = "crosslinux_fake-certgen",
+    embed = [":fake-certgen_lib"],
+    goarch = "amd64",
+    goos = "linux",
+    visibility = ["//visibility:public"],
+)
+
 container_image(
     name = "fakecertgen",
     base = "@alpine_linux_amd64//image",
-    entrypoint = ["/entrypoint.sh"],
+    cmd="/crosslinux_fake-certgen",
     files = [
-        "//:entrypoint",
-        "//cmd/fake-certgen:fake-certgen",
+        "//cmd/fake-certgen:crosslinux_fake-certgen",
     ],
     repository = "nasenbaerchen",
 )
