@@ -39,6 +39,17 @@ func GetCertificate() *Certificate {
 	return instance
 }
 
+func RenewCertificate() {
+	lock.Lock()
+	defer lock.Unlock()
+	instance = nil
+	newcrt, err := initCertificate()
+	if err != nil {
+		log.Fatal(err)
+	}
+	instance = newcrt
+}
+
 func initCertificate() (*Certificate, error) {
 	cert := &x509.Certificate{
 		SerialNumber: big.NewInt(1658),

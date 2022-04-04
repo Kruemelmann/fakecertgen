@@ -1,7 +1,12 @@
 package handlers
 
-import "net/http"
+import (
+	"net/http"
+
+	"github.com/kruemelmann/fake-certgen/pkg/cert"
+)
 
 func RenewHandler(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("TODO\n"))
+	cert.RenewCertificate()
+	w.Write([]byte("done\n"))
 }
