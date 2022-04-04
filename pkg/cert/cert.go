@@ -95,7 +95,7 @@ func initCertificate() (*Certificate, error) {
 
 	newcert := &Certificate{
 		cert:       cert,
-		PEM:        certPrivKeyPEM,
+		PEM:        certPEM,
 		PrivKeyPEM: certPrivKeyPEM,
 	}
 	return newcert, nil
