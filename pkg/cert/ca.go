@@ -24,9 +24,9 @@ type CA struct {
 	caPrivKeyPEM *bytes.Buffer
 }
 
-func NewCA() *CA {
-	lock.Lock()
-	defer lock.Unlock()
+func GetCA() *CA {
+	calock.Lock()
+	defer calock.Unlock()
 	if instance == nil {
 		cainstance, err = initCA()
 		if err != nil {
