@@ -4,6 +4,12 @@ workspace(
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
+############################################################
+#
+# Golang and Gazelle
+#
+############################################################
+
 http_archive(
     name = "io_bazel_rules_go",
     sha256 = "f2dcd210c7095febe54b804bb1cd3a58fe8435a909db2ec04e31542631cf715c",
@@ -25,11 +31,6 @@ http_archive(
 load("@io_bazel_rules_go//go:deps.bzl", "go_register_toolchains", "go_rules_dependencies")
 load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies")
 
-############################################################
-# Define your own dependencies here using go_repository.
-# Else, dependencies declared by rules_go/gazelle will be used.
-# The first declaration of an external repository "wins".
-############################################################
 
 load("//:deps.bzl", "go_dependencies")
 
@@ -42,7 +43,11 @@ go_register_toolchains(version = "1.18")
 
 gazelle_dependencies()
 
-################### docker ##################
+############################################################
+#
+# Docker
+#
+############################################################
 
 http_archive(
     name = "io_bazel_rules_docker",
@@ -69,4 +74,19 @@ container_deps()
 load(
     "@io_bazel_rules_docker//container:container.bzl",
     "container_pull",
+)
+
+############################################################
+#
+# Building the Dockerimage
+#
+############################################################
+load("@io_bazel_rules_docker//contrib:dockerfile_build.bzl", "dockerfile_image")
+
+container_pull(
+    name = "alpine_linux_amd64",
+    registry = "index.docker.io",
+    repository = "library/alpine",
+    tag = "3.8",
+    digest = "sha256:954b378c375d852eb3c63ab88978f640b4348b01c1b3456a024a81536dafbbf4"
 )

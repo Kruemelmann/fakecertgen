@@ -13,3 +13,13 @@ gazelle(
     ],
     command = "update-repos",
 )
+
+
+# building the docker image
+filegroup(
+    name = "entrypoint",
+    srcs = ["scripts/entrypoint.sh"],
+    visibility = ["//visibility:public"],
+)
+
+
