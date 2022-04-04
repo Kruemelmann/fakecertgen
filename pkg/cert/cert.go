@@ -21,18 +21,20 @@ var (
 
 type Certificate struct {
 	cert       *x509.Certificate
-	PEM        *bytes.Buffer
+	PrivKey    *rsa.PrivateKey
 	PrivKeyPEM *bytes.Buffer
+	PEM        *bytes.Buffer
 }
 
 func GetCertificate() *Certificate {
 	lock.Lock()
 	defer lock.Unlock()
 	if instance == nil {
-		instance, err = initCertificate()
+		newcrt, err := initCertificate()
 		if err != nil {
-			log.Fatal("Unable to generate new Certificate")
+			log.Fatal(err)
 		}
+		instance = newcrt
 	}
 	return instance
 }
@@ -63,7 +65,7 @@ func initCertificate() (*Certificate, error) {
 		return nil, err
 	}
 
-	certBytes, err := x509.CreateCertificate(rand.Reader, cert, ca.cert, &certPrivKey.PublicKey, ca.PrivKeyPEM)
+	certBytes, err := x509.CreateCertificate(rand.Reader, cert, ca.cert, &certPrivKey.PublicKey, ca.PrivKey)
 	if err != nil {
 		return nil, err
 	}
@@ -79,5 +81,11 @@ func initCertificate() (*Certificate, error) {
 		Type:  "RSA PRIVATE KEY",
 		Bytes: x509.MarshalPKCS1PrivateKey(certPrivKey),
 	})
-	return nil, nil
+
+	newcert := &Certificate{
+		cert:       cert,
+		PEM:        certPrivKeyPEM,
+		PrivKeyPEM: certPrivKeyPEM,
+	}
+	return newcert, nil
 }

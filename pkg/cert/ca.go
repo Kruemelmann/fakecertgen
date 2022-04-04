@@ -22,10 +22,11 @@ func GetCA() *Certificate {
 	calock.Lock()
 	defer calock.Unlock()
 	if instance == nil {
-		cainstance, err = initCA()
+		newca, err := initCA()
 		if err != nil {
-			log.Fatal("Unable to create CA instance")
+			log.Fatal(err)
 		}
+		cainstance = newca
 	}
 	return cainstance
 }
@@ -73,8 +74,9 @@ func initCA() (*Certificate, error) {
 		Bytes: x509.MarshalPKCS1PrivateKey(caPrivKey),
 	})
 
-	ca = &Certificate{
+	newca := &Certificate{
 		cert:       cacert,
+		PrivKey:    caPrivKey,
 		PEM:        caPEM,
 		PrivKeyPEM: caPrivKeyPEM,
 	}
