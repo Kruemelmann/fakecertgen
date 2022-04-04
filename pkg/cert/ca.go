@@ -15,16 +15,10 @@ import (
 
 var (
 	calock     = &sync.Mutex{}
-	cainstance *CA
+	cainstance *Certificate
 )
 
-type CA struct {
-	cert         *x509.Certificate
-	caPEM        *bytes.Buffer
-	caPrivKeyPEM *bytes.Buffer
-}
-
-func GetCA() *CA {
+func GetCA() *Certificate {
 	calock.Lock()
 	defer calock.Unlock()
 	if instance == nil {
@@ -36,8 +30,8 @@ func GetCA() *CA {
 	return cainstance
 }
 
-func initCA() (*CA, error) {
-	ca := &x509.Certificate{
+func initCA() (*Certificate, error) {
+	cacert := &x509.Certificate{
 		SerialNumber: big.NewInt(2019),
 		Subject: pkix.Name{
 			Organization:  []string{"Company, INC."},
@@ -62,7 +56,7 @@ func initCA() (*CA, error) {
 	}
 
 	//create a cert for the CA
-	caBytes, err := x509.CreateCertificate(rand.Reader, ca, ca, &caPrivKey.PublicKey, caPrivKey)
+	caBytes, err := x509.CreateCertificate(rand.Reader, cacert, cacert, &caPrivKey.PublicKey, caPrivKey)
 	if err != nil {
 		return nil, err
 	}
@@ -79,10 +73,10 @@ func initCA() (*CA, error) {
 		Bytes: x509.MarshalPKCS1PrivateKey(caPrivKey),
 	})
 
-	newca = &CA{
-		cert:         ca,
-		caPEM:        caPEM,
-		caPrivKeyPEM: caPrivKeyPEM,
+	ca = &Certificate{
+		cert:       cacert,
+		PEM:        caPEM,
+		PrivKeyPEM: caPrivKeyPEM,
 	}
 	return newca, nil
 }
