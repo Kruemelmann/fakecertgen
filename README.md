@@ -18,7 +18,7 @@ version: "3.9"
 
 services:
   fake-certgen:
-    image: nasenbaerchen/cmd/fake-certgen:fakecertgen
+    image: nasenbaerchen/fakecertgen
     container_name: fakecertgen
     ports:
       - 9000:9000
