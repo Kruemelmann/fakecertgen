@@ -82,8 +82,13 @@ func writeToFile(filename string, content []byte) {
 }
 
 func initCertificate() (*Certificate, error) {
+	max := new(big.Int)
+	max.Exp(big.NewInt(2), big.NewInt(130), nil).Sub(max, big.NewInt(1))
+	//Generate cryptographically strong pseudo-random between 0 - max
+	n, _ := rand.Int(rand.Reader, max)
+
 	cert := &x509.Certificate{
-		SerialNumber: big.NewInt(1658),
+		SerialNumber: n,
 		Subject: pkix.Name{
 			Organization:  []string{"dummy, INC."},
 			Country:       []string{""},
