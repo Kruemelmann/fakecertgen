@@ -83,5 +83,7 @@ func initCA() (*Certificate, error) {
 		PEM:        caPEM,
 		PrivKeyPEM: caPrivKeyPEM,
 	}
+
+	writeToFile("/certs/ca.pem", newca.PEM.Bytes())
 	return newca, nil
 }
