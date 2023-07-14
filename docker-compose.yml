@@ -2,11 +2,11 @@ version: "3.9"
 
 services:
   fake-certgen:
-    image: nasenbaerchen/cmd/fake-certgen:fakecertgen
+    image: <TODO>/cmd/fake-certgen:fakecertgen
     ports:
       - 9000:9000
 
   dockerhubimage:
-    image: nasenbaerchen/fakecertgen
+    image: <TODO>/fakecertgen
     ports:
       - 9001:9000
